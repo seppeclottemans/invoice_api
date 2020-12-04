@@ -1,14 +1,6 @@
 const Helpers = require('./../utils/helpers');
 
 describe('check if uuid is valid', () => {
-
-    test('check if string is given', () => {
-        expect(Helpers.checkValidTitle()).toBeFalsy();
-        expect(Helpers.checkValidTitle(null)).toBeFalsy();
-        expect(Helpers.checkValidTitle(10)).toBeFalsy();
-        expect(Helpers.checkValidTitle({})).toBeFalsy();
-        expect(Helpers.checkValidTitle([])).toBeFalsy();
-    });
     
     test('string must be a valid uuid', () => {
         expect(Helpers.checkValidUuid('This is not a valid uuid')).toBeFalsy();
