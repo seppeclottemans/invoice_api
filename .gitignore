@@ -1,3 +1,5 @@
 sources.md
 
 node_modules/
+
+.env

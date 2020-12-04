@@ -1,4 +1,4 @@
-const Helpers = require('./../utils/helpers');
+const Helpers = require('../utils/helpers');
 
 describe('check if uuid is valid', () => {
     
