@@ -9,7 +9,7 @@ const pg = require('knex')({
   client: 'pg',
   version: '9.6',      
   searchPath: ['knex', 'public'],
-  connection: process.env.PG_CONNECTION_STRING ? process.env.PG_CONNECTION_STRING : 'postgres://example:example@localhost:5432/test'
+  connection: process.env.PG_CONNECTION_STRING ? process.env.PG_CONNECTION_STRING : 'postgres://example:example@localhost:5432/invoice_api_db'
 });
 
 
@@ -28,5 +28,23 @@ app.use(
 app.get('/test', (req, res) => {
   res.status(200).send();
 })
+
+
+async function initialiseTables() {
+  await pg.schema.hasTable('invoices').then(async (exists) => {
+    if (!exists) {
+      await pg.schema
+        .createTable('invoices', (table) => {
+          table.increments();
+          table.timestamps(true, true);
+        })
+        .then(async () => {
+          console.log('created table invoices');
+        });
+
+    }
+  });
+}
+initialiseTables();
 
 module.exports = app;
