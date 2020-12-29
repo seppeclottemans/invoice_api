@@ -13,7 +13,7 @@ const Helpers = {
 
   getCheckDigits(invoiceNumber)
   {
-    if(isNaN(invoiceNumber)){
+    if(isNaN(invoiceNumber) || typeof invoiceNumber === "object"){
       return [400 , "The reference needs to be an integer. It can not contain any letters."];
    }
 
