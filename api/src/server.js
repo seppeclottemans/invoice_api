@@ -30,7 +30,9 @@ app.get('/test', (req, res) => {
 })
 
 app.get('/get-check-digits/:reference', (req, res) => {
-  res.send(Helpers.getCheckDigits(req.params.reference));
+  let result = Helpers.getCheckDigits(req.params.reference);
+  res.status(result[0]);
+  res.send(result[1]);
 })
 
 async function initialiseTables() {
