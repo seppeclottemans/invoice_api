@@ -17,8 +17,8 @@ describe('check if uuid is valid', () => {
 describe('check if given reference returns valid check digits', () => {
     
     //examples tested on https://www.mobilefish.com/services/creditor_reference/creditor_reference.php
-    references = ['5496842634654', '12318152 ', 454, '36524564', 78975, '9875614324'];
-    expectedCheckDigits = ['06', '08', '65', '80', '30', '42'];
+    references = ['5496842634654', '12318152 ', 454, '36524564', 78975, '9875614324', '810888428933129078686'];
+    expectedCheckDigits = ['06', '08', '65', '80', '30', '42', '53'];
 
     test('valid references should return the expected check digits', () => {
         references.forEach(function (reference, i) {
