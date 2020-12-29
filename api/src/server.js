@@ -29,6 +29,11 @@ app.get('/test', (req, res) => {
   res.status(200).send();
 })
 
+app.get('/get-check-digits/:reference', (req, res) => {
+  let result = Helpers.getCheckDigits(req.params.reference);
+  res.status(result[0]);
+  res.send(result[1]);
+})
 
 async function initialiseTables() {
   await pg.schema.hasTable('invoices').then(async (exists) => {
