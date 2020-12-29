@@ -30,18 +30,21 @@ describe('check if given reference returns valid check digits', () => {
 
 describe('check if given invalid reference returns error status with error message', () => {
     
+    // test with letters
     test('invalid reference strings returns error status with error message', () => {
         expect(Helpers.getCheckDigits('4203B224A')).toStrictEqual([400, "The reference needs to be an integer. It can not contain any letters."]);
         expect(Helpers.getCheckDigits('RF47374')).toStrictEqual([400, "The reference needs to be an integer. It can not contain any letters."]);
         expect(Helpers.getCheckDigits('febfjezbf')).toStrictEqual([400, "The reference needs to be an integer. It can not contain any letters."]);
     });
 
+    // test with invalid types
     test('invalid reference types returns error status with error message', () => {
         expect(Helpers.getCheckDigits({})).toStrictEqual([400, "The reference needs to be an integer. It can not contain any letters."]);
         expect(Helpers.getCheckDigits({"test": 12345})).toStrictEqual([400, "The reference needs to be an integer. It can not contain any letters."]);
         expect(Helpers.getCheckDigits([])).toStrictEqual([400, "The reference needs to be an integer. It can not contain any letters."]);
     });
 
+    // test with negative numbers
     test('negative references returns error status with message', () => {
         expect(Helpers.getCheckDigits(-454)).toStrictEqual([400, "The reference can not be negative."]);
         expect(Helpers.getCheckDigits(-12318152)).toStrictEqual([400, "The reference can not be negative."]);
