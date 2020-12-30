@@ -39,7 +39,24 @@ const Helpers = {
       } else {
           return [200, checkDigits.toString()];
       }
+  },
+
+  validateReferenceNumber(referenceNumber, checkDigits){
+
+    if(typeof referenceNumber === "object"){
+      return false;
+   }
+
+    //Remove all spaces from the reference.
+    referenceNumber = referenceNumber.replace(/\s+/g, '');
+    //Remove the RF and the check digits.
+    referenceNumber = referenceNumber.substring(4);
+    //Add them at the end in digit form.
+    referenceNumber = referenceNumber + "2715" + checkDigits;
+    //Check if modulo 97 returns 1.
+    return BigInt(referenceNumber) % BigInt(97) === BigInt(1);
   }
+
 }
 
 module.exports = Helpers

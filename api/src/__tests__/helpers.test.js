@@ -13,6 +13,7 @@ describe('check if uuid is valid', () => {
 
 });
 
+// get check digits tests
 
 describe('check if given reference returns valid check digits', () => {
     
@@ -20,11 +21,14 @@ describe('check if given reference returns valid check digits', () => {
     references = ['5496842634654', '12318152 ', 454, '36524564', 78975, '9875614324', '810888428933129078686'];
     expectedCheckDigits = ['06', '08', '65', '80', '30', '42', '53'];
 
-    test('valid references should return the expected check digits', () => {
-        references.forEach(function (reference, i) {
+    let i = 0;
+    test.each(references)(
+        'valid references should return the expected check digits',
+        (reference) => {
             expect(Helpers.getCheckDigits(reference)).toStrictEqual([200, expectedCheckDigits[i]]);
-        });
-    });
+            i++;
+        },
+    );
 
 });
 
@@ -50,6 +54,54 @@ describe('check if given invalid reference returns error status with error messa
         expect(Helpers.getCheckDigits(-12318152)).toStrictEqual([400, "The reference can not be negative."]);
         expect(Helpers.getCheckDigits('-12318152')).toStrictEqual([400, "The reference can not be negative."]);
         expect(Helpers.getCheckDigits('-5496842634654')).toStrictEqual([400, "The reference can not be negative."]);
+    });
+
+});
+
+
+// validate reference number tests
+
+describe('check if given valid credit reference pass validation check', () => {
+    
+    //examples tested on https://www.mobilefish.com/services/creditor_reference/creditor_reference.php
+    creditorReferences = ['RF065496842634654', 'RF0812318152', 'RF65454', 'RF8036524564', 'RF3078975', 'RF429875614324'];
+    checkDigits = ['06', '08', '65', '80', '30', '42'];
+
+    let i = 0;
+    test.each(creditorReferences)(
+        'validation should return true',
+        (referenceNumber) => {
+            expect(Helpers.validateReferenceNumber(referenceNumber, checkDigits[i])).toBe(true);
+            i++;
+        },
+      );
+
+});
+
+describe('check if given invalid credit reference fails the validation check', () => {
+    
+    //examples tested on https://www.mobilefish.com/services/creditor_reference/creditor_reference.php
+    creditorReferences = ['RF065496842634653', 'RF0812318151', 'RF65458', 'RF8036524569', 'RF3078974', 'RF429875614322', 'RF429875614322'];
+    checkDigits = ['06', '08', '65', '80', '30', '42', '42'];
+
+    let i = 0;
+    test.each(creditorReferences)(
+        'validation should return false',
+        (referenceNumber) => {
+            expect(Helpers.validateReferenceNumber(referenceNumber, checkDigits[i])).toBeFalsy();
+            i++;
+        },
+      );
+
+});
+
+describe('check if given invalid credit reference fails the validation check', () => {
+    
+    test('invalid parameters return false on validation', () => {
+        expect(Helpers.validateReferenceNumber('58', 10)).toBeFalsy();
+        expect(Helpers.validateReferenceNumber('', 1)).toBeFalsy();
+        expect(Helpers.validateReferenceNumber({}, '10')).toBeFalsy();
+        expect(Helpers.validateReferenceNumber([], '10')).toBeFalsy();
     });
 
 });

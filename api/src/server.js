@@ -35,6 +35,15 @@ app.get('/get-check-digits/:reference', (req, res) => {
   res.send(result[1]);
 })
 
+app.get('/validate/:referenceNumber/:checkDigits', (req, res) => {
+  const result = Helpers.validateReferenceNumber(req.params.referenceNumber, req.params.checkDigits);
+  if(result){
+    res.send(result);
+  }else{
+    res.send("invalid reference number.");
+  }
+})
+
 async function initialiseTables() {
   await pg.schema.hasTable('invoices').then(async (exists) => {
     if (!exists) {
