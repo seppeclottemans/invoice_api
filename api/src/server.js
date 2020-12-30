@@ -36,12 +36,31 @@ async function initialiseTables() {
       await pg.schema
         .createTable('invoices', (table) => {
           table.increments();
+          table.string('buisiness_name');
+          table.string('client_name');
+          table.bigInteger('amount_total');
+          table.bigInteger('invoice_number');
+          table.date('due_date');
+          table.integer('type_id');
           table.timestamps(true, true);
         })
         .then(async () => {
           console.log('created table invoices');
         });
+    }
+  });
 
+  await pg.schema.hasTable('invoice_types').then(async (exists) => {
+    if (!exists) {
+      await pg.schema
+        .createTable('invoices', (table) => {
+          table.increments();
+          table.string('name');
+          table.timestamps(true, true);
+        })
+        .then(async () => {
+          console.log('created table invoice_types');
+        });
     }
   });
 }
