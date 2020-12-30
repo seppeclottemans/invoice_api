@@ -27,7 +27,6 @@ const databaseHelpers = {
             if(expectedParameter.type == 'number' && isNaN(parameters[parameter])){
                 return [false, `parameter ${parameter} must be numeric`]
             }else if(expectedParameter.type == 'date' && !databaseHelpers.isValidDate(parameters[parameter])){
-                console.log(databaseHelpers.isValidDate(parameters[parameter]));
                 return [false, `parameter ${parameter} must be a valid date`]
             }
         }
