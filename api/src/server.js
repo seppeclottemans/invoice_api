@@ -1,7 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const http = require('http');
-const Helpers = require('./utils/helpers.js')
+const Helpers = require('./utils/helpers.js');
+const databaseHelpers = require('./utils/databaseHelper.js');
 const port = 3000
 
 
@@ -44,12 +45,34 @@ app.get('/validate/:referenceNumber/:checkDigits', (req, res) => {
   }
 })
 
+app.post('/create', async (req, res) => {
+  if(databaseHelpers.checkInvoiceParameters(req.body)){
+    const uuid = Helpers.generateUUID();
+    await pg
+    .table('invoices')
+    .insert({uuid,
+      reference_number: req.body.reference_number,
+      buisiness_name: req.body.buisiness_name,
+      client_name: req.body.client_name,
+      amount_total: req.body.amount_total,
+      invoice_number: req.body.invoice_number,
+      due_date: req.body.due_date,
+      type_id: req.body.type_id
+    })
+      res.status(202).send('invoice created succesfully.'); 
+  }else{
+    res.status(400).send('Not all parameters are given. Please check the docs to see which parameters are expected');
+  }
+})
+
 async function initialiseTables() {
   await pg.schema.hasTable('invoices').then(async (exists) => {
     if (!exists) {
       await pg.schema
         .createTable('invoices', (table) => {
           table.increments();
+          table.uuid('uuid');
+          table.string('reference_number');
           table.string('buisiness_name');
           table.string('client_name');
           table.bigInteger('amount_total');
