@@ -1,19 +1,20 @@
 const databaseHelpers = {
     checkInvoiceParameters: (parameters) => {
+        const expectedParameters = ['reference_number', 'buisiness_name', 'client_name', 'amount_total', 'invoice_number', 'due_date', 'type_id'];
+
         // check if all required parameters are given.
-        if(parameters.hasOwnProperty('reference_number') && 
-        parameters.hasOwnProperty('buisiness_name') &&
-        parameters.hasOwnProperty('client_name') &&
-        parameters.hasOwnProperty('amount_total') &&
-        parameters.hasOwnProperty('invoice_number') &&
-        parameters.hasOwnProperty('due_date') && 
-        parameters.hasOwnProperty('type_id')
-        ){
-            return true;
-        }else{
-            return false;
+        for (let i = 0; i < expectedParameters.length; i++) {
+            if(!parameters.hasOwnProperty(expectedParameters[i])) {
+                return [false, `missing parameter ${expectedParameters[i]}`]
+            }
         }
+
+        return [true]
      },
+
+     checkInvoiceParametertypes: (parameters) => {
+         return true;
+     }
   
   }
   
