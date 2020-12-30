@@ -53,7 +53,8 @@ app.post('/create', async (req, res) => {
 
   if(parameterGivenCheck[0]){
     // check if parameters have the right types
-    if(databaseHelpers.checkInvoiceParametertypes(req.body)){
+    const parametersTypeCheck = databaseHelpers.checkInvoiceParametertypes(req.body)
+    if(parametersTypeCheck[0]){
       const uuid = Helpers.generateUUID();
       await pg
       .table('invoices')
@@ -67,7 +68,9 @@ app.post('/create', async (req, res) => {
         type_id: req.body.type_id
       })
       res.status(202).send('invoice created succesfully.'); 
-    }  
+    }else{
+      res.status(400).send(parametersTypeCheck[1]);
+    }
   }else{
     res.status(400).send(parameterGivenCheck[1]);
   }
