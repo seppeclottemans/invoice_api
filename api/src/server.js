@@ -67,13 +67,27 @@ async function initialiseTables() {
   await pg.schema.hasTable('invoice_types').then(async (exists) => {
     if (!exists) {
       await pg.schema
-        .createTable('invoices', (table) => {
+        .createTable('invoice_types', (table) => {
           table.increments();
           table.string('name');
           table.timestamps(true, true);
         })
         .then(async () => {
           console.log('created table invoice_types');
+          await pg.table('invoice_types').insert([{ name: 'Standard invoice' }, 
+            { name: 'Credit invoice' },
+            { name: 'Expence report' },
+            { name: 'Debit invoice' },
+            { name: 'Mixed invoice' },
+            { name: 'Commercial invoice' },
+            { name: 'Timesheet invoice' },
+            { name: 'Pro forma invoice' },
+            { name: 'Intrim invoice' },
+            { name: 'Final invoice' },
+            { name: 'Past due invoice' },
+            { name: 'Recurring invoice' },
+            { name: 'E-invoice' }
+          ])
         });
     }
   });
