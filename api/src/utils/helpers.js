@@ -42,6 +42,11 @@ const Helpers = {
   },
 
   validateReferenceNumber(referenceNumber, checkDigits){
+
+    if(typeof referenceNumber === "object"){
+      return false;
+   }
+
     //Remove all spaces from the reference.
     referenceNumber = referenceNumber.replace(/\s+/g, '');
     //Remove the RF and the check digits.

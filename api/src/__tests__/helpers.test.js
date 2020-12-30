@@ -78,7 +78,7 @@ describe('check if given valid credit reference pass validation check', () => {
 
 });
 
-describe('check if given invalid credit reference it fails the validation check', () => {
+describe('check if given invalid credit reference fails the validation check', () => {
     
     //examples tested on https://www.mobilefish.com/services/creditor_reference/creditor_reference.php
     creditorReferences = ['RF065496842634653', 'RF0812318151', 'RF65458', 'RF8036524569', 'RF3078974', 'RF429875614322', 'RF429875614322'];
@@ -92,5 +92,16 @@ describe('check if given invalid credit reference it fails the validation check'
             i++;
         },
       );
+
+});
+
+describe('check if given invalid credit reference fails the validation check', () => {
+    
+    test('invalid parameters return false on validation', () => {
+        expect(Helpers.validateReferenceNumber('58', 10)).toBeFalsy();
+        expect(Helpers.validateReferenceNumber('', 1)).toBeFalsy();
+        expect(Helpers.validateReferenceNumber({}, '10')).toBeFalsy();
+        expect(Helpers.validateReferenceNumber([], '10')).toBeFalsy();
+    });
 
 });
