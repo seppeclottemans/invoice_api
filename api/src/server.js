@@ -55,22 +55,39 @@ app.post('/create', async (req, res) => {
     // check if parameters have the right types
     const parametersTypeCheck = databaseHelpers.checkInvoiceParametertypes(req.body)
     if(parametersTypeCheck[0]){
-      const uuid = Helpers.generateUUID();
-      await pg
-      .table('invoices')
-      .insert({uuid,
-        reference_number: req.body.reference_number,
-        buisiness_name: req.body.buisiness_name,
-        client_name: req.body.client_name,
-        amount_total: req.body.amount_total,
-        invoice_number: req.body.invoice_number,
-        due_date: req.body.due_date,
-        type_id: req.body.type_id
-      })
-      res.status(202).send('invoice created succesfully.'); 
+
+      //check if invoice doesn't already exists
+      const invoice = await pg.count('invoice_number').from('invoices').where({invoice_number: req.body.invoice_number})
+      if(invoice[0].count == 0){
+
+        // check if invoice type exists
+        const invoiceType = await pg.count('id').from('invoice_types').where({id: req.body.type_id})
+        if(invoiceType[0].count == 1){
+          const uuid = Helpers.generateUUID();
+          await pg
+          .table('invoices')
+          .insert({uuid,
+            reference_number: req.body.reference_number,
+            buisiness_name: req.body.buisiness_name,
+            client_name: req.body.client_name,
+            amount_total: req.body.amount_total,
+            invoice_number: req.body.invoice_number,
+            due_date: req.body.due_date,
+            type_id: req.body.type_id
+        })
+          res.status(202).send('invoice created succesfully.'); 
+        }else{
+          res.status(400).send('invalid type_id.');
+        }
+
+      }else{
+        res.status(400).send('invoice with this invoice number already exists');
+      }
+
     }else{
       res.status(400).send(parametersTypeCheck[1]);
     }
+
   }else{
     res.status(400).send(parameterGivenCheck[1]);
   }
