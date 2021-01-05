@@ -46,7 +46,9 @@ app.get('/validate/:referenceNumber/:checkDigits', (req, res) => {
 })
 
 
-// database
+// database endpoints
+
+// create new invoice
 app.post('/create', async (req, res) => {
   // check if all parameters are given.
   const parameterGivenCheck = databaseHelpers.checkInvoiceParameters(req.body);
@@ -68,7 +70,7 @@ app.post('/create', async (req, res) => {
           .table('invoices')
           .insert({uuid,
             reference_number: req.body.reference_number,
-            buisiness_name: req.body.buisiness_name,
+            business_name: req.body.business_name,
             client_name: req.body.client_name,
             amount_total: req.body.amount_total,
             invoice_number: req.body.invoice_number,
@@ -93,6 +95,22 @@ app.post('/create', async (req, res) => {
   }
 })
 
+// get invoice by invoice number
+app.get('/get-by-invoice-number/:invoiceNumber', async (req, res) => {
+  if(!isNaN(req.params.invoiceNumber)){
+    const invoice = await pg
+    .first('*')
+    .from('invoices')
+    .where({invoice_number: req.params.invoiceNumber})
+    res.json({
+      invoice: invoice
+    })
+  }else{
+    res.status(400)
+    res.send('invoiceNumber parameter needs to be a number')
+  }
+})
+
 async function initialiseTables() {
   await pg.schema.hasTable('invoices').then(async (exists) => {
     if (!exists) {
@@ -101,10 +119,10 @@ async function initialiseTables() {
           table.increments();
           table.uuid('uuid');
           table.string('reference_number');
-          table.string('buisiness_name');
+          table.string('business_name');
           table.string('client_name');
           table.bigInteger('amount_total');
-          table.bigInteger('invoice_number');
+          table.bigInteger('invoice_number').unique();
           table.date('due_date');
           table.integer('type_id');
           table.timestamps(true, true);
@@ -125,6 +143,7 @@ async function initialiseTables() {
         })
         .then(async () => {
           console.log('created table invoice_types');
+          // fill table with different invoice types
           await pg.table('invoice_types').insert([{ name: 'Standard invoice' }, 
             { name: 'Credit invoice' },
             { name: 'Expence report' },

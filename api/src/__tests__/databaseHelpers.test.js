@@ -5,7 +5,7 @@ describe('valid parameters should return true', () => {
     
     const parameters = {
         reference_number: 'RF0812318152',
-        buisiness_name: 'seppe corp',
+        business_name: 'seppe corp',
         client_name: 'google',
         amount_total:'10000',
         invoice_number:'100',
@@ -31,7 +31,7 @@ describe('invalid parameters should return false with error message', () => {
     
     let parameters = {
         reference_number: 'RF0812318152',
-        buisiness_name: 'seppe corp',
+        business_name: 'seppe corp',
         client_name: 'google',
         amount_total:'10000',
         due_date: '2000-01-02',
