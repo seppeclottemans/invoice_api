@@ -70,7 +70,7 @@ app.post('/create', async (req, res) => {
           .table('invoices')
           .insert({uuid,
             reference_number: req.body.reference_number,
-            buisiness_name: req.body.buisiness_name,
+            business_name: req.body.business_name,
             client_name: req.body.client_name,
             amount_total: req.body.amount_total,
             invoice_number: req.body.invoice_number,
@@ -119,7 +119,7 @@ async function initialiseTables() {
           table.increments();
           table.uuid('uuid');
           table.string('reference_number');
-          table.string('buisiness_name');
+          table.string('business_name');
           table.string('client_name');
           table.bigInteger('amount_total');
           table.bigInteger('invoice_number').unique();

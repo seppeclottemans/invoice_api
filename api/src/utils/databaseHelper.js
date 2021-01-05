@@ -1,5 +1,5 @@
 const expectedParameters = [{name: 'reference_number', type: 'string'},
-        {name: 'buisiness_name', type: 'string'},
+        {name: 'business_name', type: 'string'},
         {name: 'client_name', type: 'string'},
         {name: 'amount_total', type: 'number'},
         {name: 'invoice_number', type: 'number'},
