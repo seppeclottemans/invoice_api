@@ -113,28 +113,27 @@ This is an API which helps you to create European invoices.
 ```
 
 
-
-
 ## Availeble invoice types
-| id | name | 
-| :--- | :--- |
-| `Standard invoice` | `1` 
-| `Credit invoice` | `2` 
-| `Expence report` | `3` 
-| `Debit invoice` | `4` 
-| `Mixed invoice` | `5` 
-| `Commercial invoice` | `6` 
-| `Timesheet invoice` | `7` 
-| `Pro forma invoice` | `8` 
-| `Intrim invoice` | `9` 
-| `Final invoice` | `10` 
-| `Past due invoice` | `11` 
-| `Recurring invoice` | `12` 
-| `E-invoice` | `13` 
 
-## Where can I find help?
+| id | name |
+| :--- | :--- |
+| `Standard invoice` | `1`
+| `Credit invoice` | `2`
+| `Expence report` | `3`
+| `Debit invoice` | `4`
+| `Mixed invoice` | `5`
+| `Commercial invoice` | `6`
+| `Timesheet invoice` | `7`
+| `Pro forma invoice` | `8`
+| `Intrim invoice` | `9`
+| `Final invoice` | `10`
+| `Past due invoice` | `11`
+| `Recurring invoice` | `12`
+| `E-invoice` | `13`
+
+## Where can I find help?
 If you have a question you can email me at *seppe.clottemans@student.ehb.be*.
-## Project Status
+## Project Status
 This project is currently **in development**.
-## Authors
+## Authors
 * Seppe Clottemans
