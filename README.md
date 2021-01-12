@@ -117,7 +117,7 @@ This is an API which helps you to create European invoices.
 
 ## Availeble invoice types
 | id | name | 
-| :--- | :--- 
+| :--- | :--- |
 | `Standard invoice` | `1` 
 | `Credit invoice` | `2` 
 | `Expence report` | `3` 
