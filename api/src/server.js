@@ -30,12 +30,23 @@ app.get('/test', (req, res) => {
   res.status(200).send();
 })
 
+/**
+ * Returns the check digits of the given reference.
+ * @param {integer} reference
+ * @returns {integer} checkdigits of the given reference
+ */
 app.get('/get-check-digits/:reference', (req, res) => {
   let result = Helpers.getCheckDigits(req.params.reference);
   res.status(result[0]);
   res.send(result[1]);
 })
 
+/**
+ * Validates the reference number with the given check digits.
+ * @param {string} referenceNumber (invoice number)
+ * @param {integer} checkDigits
+ * @returns {(boolean|string)} true if valid referenceNumber else string: "invalid reference number."
+ */
 app.get('/validate/:referenceNumber/:checkDigits', (req, res) => {
   const result = Helpers.validateReferenceNumber(req.params.referenceNumber, req.params.checkDigits);
   if(result){
@@ -48,8 +59,20 @@ app.get('/validate/:referenceNumber/:checkDigits', (req, res) => {
 
 // database endpoints
 
+
 // create new invoice
-app.post('/create', async (req, res) => {
+/**
+ * Creates a new invoice.
+ * @param {string} referenceNumber (invoice number)
+ * @param {string} buisiness_name
+ * @param {string} client_name
+ * @param {number} amount_total
+ * @param {integer} invoice_number
+ * @param {date} due_date
+ * @param {integer} type_id
+ * @returns {string} returns feedback if invalid requests else returns: "invoice created succesfully."
+ */
+app.post('/creat-invoice', async (req, res) => {
   // check if all parameters are given.
   const parameterGivenCheck = databaseHelpers.checkInvoiceParameters(req.body);
 
@@ -95,6 +118,11 @@ app.post('/create', async (req, res) => {
   }
 })
 
+/**
+ * Gets an invoice by its invoice number.
+ * @param {integer} invoiceNumber
+ * @returns {(json|string)} json object with the invoice in it. or string with invalid request feedback.
+ */
 // get invoice by invoice number
 app.get('/get-by-invoice-number/:invoiceNumber', async (req, res) => {
   if(!isNaN(req.params.invoiceNumber)){
@@ -111,6 +139,7 @@ app.get('/get-by-invoice-number/:invoiceNumber', async (req, res) => {
   }
 })
 
+// create and fill database automatically
 async function initialiseTables() {
   await pg.schema.hasTable('invoices').then(async (exists) => {
     if (!exists) {
@@ -144,7 +173,8 @@ async function initialiseTables() {
         .then(async () => {
           console.log('created table invoice_types');
           // fill table with different invoice types
-          await pg.table('invoice_types').insert([{ name: 'Standard invoice' }, 
+          await pg.table('invoice_types').insert([
+            { name: 'Standard invoice' }, 
             { name: 'Credit invoice' },
             { name: 'Expence report' },
             { name: 'Debit invoice' },
