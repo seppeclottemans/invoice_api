@@ -72,7 +72,7 @@ app.get('/validate/:referenceNumber/:checkDigits', (req, res) => {
  * @param {integer} type_id
  * @returns {string} returns feedback if invalid requests else returns: "invoice created succesfully."
  */
-app.post('/creat-invoice', async (req, res) => {
+app.post('/create-invoice', async (req, res) => {
   // check if all parameters are given.
   const parameterGivenCheck = databaseHelpers.checkInvoiceParameters(req.body);
 

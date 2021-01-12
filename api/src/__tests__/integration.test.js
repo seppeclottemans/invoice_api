@@ -14,7 +14,7 @@ describe('add record to the invoices table and retrieve that record', () => {
         const invoiceNumber = Math.floor(Math.random() * 100000);
 
         // create invoice
-        const createInvoiceResponce = await request.post('/create').send({
+        const createInvoiceResponce = await request.post('/create-invoice').send({
             reference_number: "RF0812318152",
             business_name: "seppe corp",
             client_name: "google",
