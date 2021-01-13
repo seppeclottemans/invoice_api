@@ -60,7 +60,7 @@ describe('add record to the invoices table and retrieve that record', () => {
 })
 
 
-// invalid create and get a invoice record requests.
+// invalid create-invoice requests.
 describe('try to create invalid invoices', () => {
 
     test('add and retrieve invoice', async (done) => {
@@ -118,5 +118,28 @@ describe('try to create invalid invoices', () => {
 
     });
 
+});
+
+
+// invalid get-by-invoice-number requests.
+describe('try to send invalid invoice get requests', () => {
+
     
-})
+    test('send invalid numbers as invoice number', async (done) => {
+
+        let getInvoiceResponse = await request.get('/get-by-invoice-number/twee');
+
+        expect(getInvoiceResponse.status).toStrictEqual(400);
+        expect(getInvoiceResponse.text).toStrictEqual("invoiceNumber parameter needs to be a number");
+
+        getInvoiceResponse = await request.get('/get-by-invoice-number/}');
+        expect(getInvoiceResponse.status).toStrictEqual(400);
+        expect(getInvoiceResponse.text).toStrictEqual("invoiceNumber parameter needs to be a number");
+
+        done();
+
+    });
+
+});
+
+    
