@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2021-01-12
+
+### Added
+
+- Integration tests for the create-invoice api endpoint.
+- Integration tests for the get-by-invoice-number api endpoint.
+
+### Fixed
+
+- ci pipeline doesn't run integration tests.
+
+## [1.2.1] - 2021-01-12
+
+### Added
+
+- documentation for each function added containing: a description of what the function or endpoint does, all needed parameters and expected types and what the function or endpoint returns.
+- missing indentations.
+
+### Fixed
+
+- fixed mistake in readme file.
+
 ## [1.2.0] - 2021-01-05
 
 ### Added
