@@ -3,3 +3,5 @@ sources.md
 node_modules/
 
 .env
+
+coverage/
