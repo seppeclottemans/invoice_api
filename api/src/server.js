@@ -60,7 +60,7 @@ app.get('/validate/:referenceNumber/:checkDigits', (req, res) => {
 // database endpoints
 
 
-// create new invoice
+
 /**
  * Creates a new invoice.
  * @param {string} referenceNumber (invoice number)
@@ -123,7 +123,6 @@ app.post('/create-invoice', async (req, res) => {
  * @param {integer} invoiceNumber
  * @returns {(json|string)} json object with the invoice in it. or string with invalid request feedback.
  */
-// get invoice by invoice number
 app.get('/get-by-invoice-number/:invoiceNumber', async (req, res) => {
   if(!isNaN(req.params.invoiceNumber)){
     const invoice = await pg
