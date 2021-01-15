@@ -74,7 +74,7 @@ This is an API which helps you to create European invoices.
 
 ### Response
 
-    returns status code 202 and message 'invoice created succesfully.' if request was send succesfully.
+    returns status code 201 and message 'invoice created succesfully.' if request was send succesfully.
     if invalid it returns status code 400 and a message explaining whats wrong.    
 
 

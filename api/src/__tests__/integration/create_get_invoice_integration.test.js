@@ -32,7 +32,7 @@ describe('add record to the invoices table and retrieve that record', () => {
         } else {
             // new invoice created
             expect(createInvoiceResponce.text).toStrictEqual("invoice created succesfully.");
-            expect(createInvoiceResponce.status).toStrictEqual(202);
+            expect(createInvoiceResponce.status).toStrictEqual(201);
         }
 
         // get invoice
@@ -107,7 +107,7 @@ describe('try to create invalid invoices', () => {
         } else {
             // new invoice created
             expect(createInvoiceResponce.text).toStrictEqual("invoice created succesfully.");
-            expect(createInvoiceResponce.status).toStrictEqual(202);
+            expect(createInvoiceResponce.status).toStrictEqual(201);
         }
 
         createInvoiceResponce = await request.post('/create-invoice').send(validInvoice);

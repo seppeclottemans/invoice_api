@@ -108,7 +108,7 @@ app.post('/create-invoice', async (req, res) => {
               due_date: req.body.due_date,
               type_id: req.body.type_id
             })
-          res.status(202).send('invoice created succesfully.');
+          res.status(201).send('invoice created succesfully.');
         } else {
           res.status(400).send('invalid type_id.');
         }

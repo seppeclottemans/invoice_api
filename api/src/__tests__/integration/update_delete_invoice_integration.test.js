@@ -31,7 +31,7 @@ describe('create and update invoice check if invoice updates succesfully', () =>
         } else {
             // new invoice created
             expect(createInvoiceResponce.text).toStrictEqual("invoice created succesfully.");
-            expect(createInvoiceResponce.status).toStrictEqual(202);
+            expect(createInvoiceResponce.status).toStrictEqual(201);
         }
 
 
