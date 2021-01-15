@@ -139,6 +139,93 @@ describe('invalid update requests should fail', () => {
 })
 
 
+// delete invoice tests
+
+// succesfully delete an invoice from the database.
+describe('calling a delete on an existing invoice should succesfully delete the invoice from the database.', () => {
+
+    const newInvoiceNumber = 10000000;
+
+    test('create and delete an invoice.', async (done) => {
+
+        // create invoice
+        const invoice = {
+            reference_number: "RF0812318152",
+            business_name: "seppe corp",
+            client_name: "google",
+            amount_total: "58054600",
+            invoice_number: newInvoiceNumber,
+            due_date: "2022-01-05",
+            type_id: "2"
+        }
+    
+        const createInvoiceResponce = await request.post('/create-invoice').send(invoice);
+
+        if (createInvoiceResponce.status == 400) {
+            // invoice already existed
+            expect(createInvoiceResponce.text).toStrictEqual("invoice with this invoice number already exists");
+        } else {
+            // new invoice created
+            expect(createInvoiceResponce.text).toStrictEqual("invoice created succesfully.");
+            expect(createInvoiceResponce.status).toStrictEqual(201);
+        }
+
+        // delete the invoice
+        const deleteInvoiceResponce = await request.delete(`/delete-invoice/${newInvoiceNumber}`);
+
+        expect(deleteInvoiceResponce.status).toStrictEqual(200);
+        expect(deleteInvoiceResponce.text).toStrictEqual("invoice deleted succesfully.");
+
+        done();
+
+    });
+
+    // deleted invoice should be empty
+    test('try to get deleted invoice.', async (done) => {
+
+        const getInvoiceResponse = await request.get(`/get-by-invoice-number/${newInvoiceNumber}`);
+
+        const jsonResponse = JSON.parse(getInvoiceResponse.text);
+
+        // check if response is empty
+        expect(getInvoiceResponse.status).toStrictEqual(200);
+        expect(jsonResponse).toStrictEqual({});
+        expect(Object.keys(jsonResponse).length).toStrictEqual(0);
+        expect(jsonResponse.constructor).toStrictEqual(Object);
+
+        done();
+
+    });
+
+});
+
+
+
+// check if invalid delete-invoice requests fail.
+describe('invalid delete requests should fail', () => {
+
+    test('try delete an invoice with invalid invoice number', async (done) => {
+
+        let deleteInvoiceResponce = await request.delete(`/delete-invoice/{}`);
+
+        expect(deleteInvoiceResponce.status).toStrictEqual(400);
+        expect(deleteInvoiceResponce.text).toStrictEqual("invoiceNumber parameter needs to be a number");
+
+        deleteInvoiceResponce = await request.delete(`/delete-invoice/azsdq`);
+
+        expect(deleteInvoiceResponce.status).toStrictEqual(400);
+        expect(deleteInvoiceResponce.text).toStrictEqual("invoiceNumber parameter needs to be a number");
+
+        deleteInvoiceResponce = await request.delete(`/delete-invoice/[]`);
+
+        expect(deleteInvoiceResponce.status).toStrictEqual(400);
+        expect(deleteInvoiceResponce.text).toStrictEqual("invoiceNumber parameter needs to be a number");
+
+
+        done();
+    });
+
+})
 
 
 // check if invalid update requests fail.
@@ -146,9 +233,41 @@ describe('update on non existing invoice should fail.', () => {
 
     test('try to update a non existing invoice.', async (done) => {
 
+        const newInvoiceNumber = 12345678;
+
+        // create invoice
+        const invoice = {
+            reference_number: "RF0812318152",
+            business_name: "seppe corp",
+            client_name: "google",
+            amount_total: "58054600",
+            invoice_number: newInvoiceNumber,
+            due_date: "2022-01-05",
+            type_id: "2"
+        }
+    
+        const createInvoiceResponce = await request.post('/create-invoice').send(invoice);
+
+        if (createInvoiceResponce.status == 400) {
+            // invoice already existed
+            expect(createInvoiceResponce.text).toStrictEqual("invoice with this invoice number already exists");
+        } else {
+            // new invoice created
+            expect(createInvoiceResponce.text).toStrictEqual("invoice created succesfully.");
+            expect(createInvoiceResponce.status).toStrictEqual(201);
+        }
+
         // first delete the invoice
+        const deleteInvoiceResponce = await request.delete(`/delete-invoice/${newInvoiceNumber}`);
+
+        expect(deleteInvoiceResponce.status).toStrictEqual(200);
+        expect(deleteInvoiceResponce.text).toStrictEqual("invoice deleted succesfully.");
 
         // try to update the invoice
+        const updateInvoiceResponce = await request.put(`/update-invoice/${newInvoiceNumber}`).send(invoice);
+
+        expect(updateInvoiceResponce.text).toStrictEqual('An invoice with this invoice number does not exist.');
+        expect(updateInvoiceResponce.status).toStrictEqual(400);
 
 
         done();

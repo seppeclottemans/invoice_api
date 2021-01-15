@@ -219,6 +219,27 @@ app.put('/update-invoice/:invoiceNumber', async (req, res) => {
   }
 })
 
+
+/**
+ * Deletes an invoice by its invoice number.
+ * @param {integer} invoiceNumber
+ * @returns {string} returns feedback if invalid requests else returns: "invoice deleted succesfully."
+ */
+app.delete('/delete-invoice/:invoiceNumber', async (req, res) => {
+  if (!isNaN(req.params.invoiceNumber)) {
+    await pg
+      .from('invoices')
+      .where({
+        invoice_number: req.params.invoiceNumber
+      })
+      .del()
+    res.status(200).send('invoice deleted succesfully.');
+  } else {
+    res.status(400)
+    res.send('invoiceNumber parameter needs to be a number')
+  }
+})
+
 // create and fill database automatically
 async function initialiseTables() {
   await pg.schema.hasTable('invoices').then(async (exists) => {

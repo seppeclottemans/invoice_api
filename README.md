@@ -64,7 +64,7 @@ This is an API which helps you to create European invoices.
 
 | Parameters | Type | Description | Example |
 | :--- | :--- | :--- | :--- |
-| `referenceNumber` | `string` | **Required**. A invoice reference number | RF0812318152
+| `reference_number` | `string` | **Required**. A invoice reference number | RF0812318152
 | `buisiness_name` | `string` | **Required**. Your business name | My business
 | `client_name` | `string` | **Required**. Your client name | Google
 | `amount_total` | `number` | **Required**. Total payment amunt | 1001.02
@@ -81,7 +81,7 @@ This is an API which helps you to create European invoices.
 
 ### Request
 
-`GET /get-by-invoice-number/:invoice-number`
+`GET /get-by-invoice-number/:invoiceNumber`
     
     http://localhost:3000/get-by-invoice-number/invoiceNumber
 
@@ -132,6 +132,22 @@ This is an API which helps you to create European invoices.
 ### Response
 
     returns status code 200 and message 'invoice updated succesfully.' if request was send succesfully.
+    if invalid it returns status code 400 and a message explaining whats wrong.  
+
+
+### Request
+
+`DELETE /delete-invoice/:invoiceNumber`
+    
+    http://localhost:3000/delete-invoice/invoiceNumber
+
+| Parameters | Type | Description | Example |
+| :--- | :--- | :--- | :--- |
+| `invoiceNumber` | `integer` | **Required**. The uniqe number of the invoice you want to delete. | 1002
+
+### Response
+
+    returns status code 200 and message 'invoice deleted succesfully.' if request was send succesfully.
     if invalid it returns status code 400 and a message explaining whats wrong.  
 
 
