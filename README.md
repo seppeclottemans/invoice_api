@@ -58,9 +58,9 @@ This is an API which helps you to create European invoices.
 
 ### Request
 
-`POST /create`
+`POST /create-invoice`
     
-    http://localhost:3000/create
+    http://localhost:3000/create-invoice
 
 | Parameters | Type | Description | Example |
 | :--- | :--- | :--- | :--- |
@@ -74,7 +74,7 @@ This is an API which helps you to create European invoices.
 
 ### Response
 
-    returns status code 202 and message 'invoice created succesfully.' if request was send succesfully.
+    returns status code 201 and message 'invoice created succesfully.' if request was send succesfully.
     if invalid it returns status code 400 and a message explaining whats wrong.    
 
 
@@ -83,11 +83,11 @@ This is an API which helps you to create European invoices.
 
 `GET /get-by-invoice-number/:invoice-number`
     
-    http://localhost:3000/get-by-invoice-number/invoice-number
+    http://localhost:3000/get-by-invoice-number/invoiceNumber
 
 | Parameters | Type | Description | Example |
 | :--- | :--- | :--- | :--- |
-| `invoice-number` | `integer` | **Required**. The uniqe number of your invoice | 1002
+| `invoiceNumber` | `integer` | **Required**. The uniqe number of your invoice | 1002
 
 ### Response
 
@@ -104,13 +104,35 @@ This is an API which helps you to create European invoices.
         "client_name": "google",
         "amount_total": "10000",
         "invoice_number": "1002",
-        "due_date": "2000-01-02T00:00:00.000Z",
+        "due_date": "2000-01-02",
         "type_id": 1,
         "created_at": "2021-01-05T15:03:28.315Z",
         "updated_at": "2021-01-05T15:03:28.315Z"
     }
 }
 ```
+
+### Request
+
+`PUT /update-invoice`
+    
+    http://localhost:3000/update-invoice/invoiceNumber
+
+| Parameters | Type | Description | Example |
+| :--- | :--- | :--- | :--- |
+| `invoiceNumber` | `integer` | **Required**. The uniqe number of your invoice **(URL param)** | 1002
+| `referenceNumber` | `string` | **Required**. A invoice reference number **(Body param)** | RF0812318152
+| `buisiness_name` | `string` | **Required**. Your business name **(Body param)** | My business
+| `client_name` | `string` | **Required**. Your client name **(Body param)** | Google
+| `amount_total` | `number` | **Required**. Total payment amunt **(Body param)** | 1001.02
+| `invoice_number` | `integer` | **Required**. The uniqe number of your invoice **(Body param)** | 1002
+| `due_date` | `date` | **Required**. The due date of the invoice format: yyyy-mm-dd **(Body param)** | 2021-08-01
+| `type_id` | `integer` | **Required**. The type id of your invoice see type id's in availeble invoice types. **(Body param)** | 2
+
+### Response
+
+    returns status code 200 and message 'invoice updated succesfully.' if request was send succesfully.
+    if invalid it returns status code 400 and a message explaining whats wrong.  
 
 
 ## Availeble invoice types
