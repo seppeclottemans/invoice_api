@@ -41,7 +41,7 @@ describe('create and update invoice check if invoice updates succesfully', () =>
         invoice.client_name = "microsoft"
         invoice.amount_total = 10000000.01
         invoice.due_date = "2025-02-20"
-        invoice.type_id = "5"
+        invoice.type_id = 5
         const updateInvoiceResponce = await request.put(`/update-invoice/${invoiceNumber}`).send(invoice);
 
         expect(updateInvoiceResponce.text).toStrictEqual("invoice updated succesfully.");
@@ -59,8 +59,13 @@ describe('create and update invoice check if invoice updates succesfully', () =>
         expect(getInvoiceResponse.status).toStrictEqual(200);
 
         // check if invoice was actually updated.
-        expect(getInvoiceResponse.body.invoice).toStrictEqual(invoice);
-
+        expect(getInvoiceResponse.body.invoice.reference_number).toStrictEqual(invoice.reference_number);
+        expect(getInvoiceResponse.body.invoice.business_name).toStrictEqual(invoice.business_name);
+        expect(getInvoiceResponse.body.invoice.client_name).toStrictEqual(invoice.client_name);
+        expect(getInvoiceResponse.body.invoice.amount_total).toStrictEqual(invoice.amount_total);
+        expect(getInvoiceResponse.body.invoice.due_date).toStrictEqual(invoice.due_date);
+        expect(getInvoiceResponse.body.invoice.type_id).toStrictEqual(invoice.type_id);
+        expect(parseInt(getInvoiceResponse.body.invoice.invoice_number)).toStrictEqual(invoice.invoice_number);
         done();
 
     });
@@ -79,7 +84,7 @@ describe('invalid update requests should fail', () => {
             invoice_number: invoiceNumber,
             due_date: "2022-01-05",
             type_id: 6
-        });        
+        });
 
         expect(updateInvoiceResponce.status).toStrictEqual(400);
         expect(updateInvoiceResponce.text).toStrictEqual('missing parameter amount_total');
@@ -91,7 +96,7 @@ describe('invalid update requests should fail', () => {
             client_name: "google",
             invoice_number: invoiceNumber,
             type_id: 6
-        });  
+        });
 
         expect(updateInvoiceResponce.status).toStrictEqual(400);
         expect(updateInvoiceResponce.text).toStrictEqual('missing parameter due_date');
@@ -110,10 +115,10 @@ describe('invalid update requests should fail', () => {
             invoice_number: invoiceNumber,
             due_date: "2050-01-35",
             type_id: 6
-        });        
+        });
 
         expect(updateInvoiceResponce.status).toStrictEqual(400);
-        expect(createInvoiceResponce.text).toStrictEqual('parameter due_date must be a valid date');
+        expect(updateInvoiceResponce.text).toStrictEqual('parameter due_date must be a valid date');
 
         updateInvoiceResponce = await request.put(`/update-invoice/${invoiceNumber}`).send({
             reference_number: "RF0812318152",
@@ -121,12 +126,12 @@ describe('invalid update requests should fail', () => {
             client_name: "google",
             amount_total: 100000.05,
             invoice_number: invoiceNumber,
-            due_date: "2050-01-35",
+            due_date: "2050-01-10",
             type_id: 205
         });
 
         expect(updateInvoiceResponce.status).toStrictEqual(400);
-        expect(createInvoiceResponce.text).toStrictEqual('invalid type_id.');
+        expect(updateInvoiceResponce.text).toStrictEqual('invalid type_id.');
 
         done();
     });
@@ -144,7 +149,7 @@ describe('update on non existing invoice should fail.', () => {
         // first delete the invoice
 
         // try to update the invoice
-        
+
 
         done();
 
