@@ -150,7 +150,20 @@ app.get('/get-by-invoice-number/:invoiceNumber', async (req, res) => {
 
 
 
-
+/**
+ * Updates an existing invoice with the new values invoice.
+ * Prameters in the URL:
+ * @param {integer} invoice_number
+ * Body parameters:
+ * @param {string} referenceNumber (invoice number)
+ * @param {string} buisiness_name
+ * @param {string} client_name
+ * @param {number} amount_total
+ * @param {integer} invoice_number
+ * @param {date} due_date
+ * @param {integer} type_id
+ * @returns {string} returns feedback if invalid requests else returns: "invoice updated succesfully."
+ */
 app.put('/update-invoice/:invoiceNumber', async (req, res) => {
 
   if (!isNaN(req.params.invoiceNumber)) {
