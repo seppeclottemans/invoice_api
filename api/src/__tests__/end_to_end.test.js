@@ -6,18 +6,17 @@ const request = supertest(app);
 
 // randomly select an invoice number.
 const invoiceNumber = Math.floor(Math.random() * 100000);
+// const invoiceNumber = 10475
 
 let invoice = {
     reference_number: "",
     business_name: "seppe corp",
-    client_name: "google",
-    amount_total: "58054600",
+    client_name: "apple",
+    amount_total: 1024851,
     invoice_number: invoiceNumber,
-    due_date: "2022-01-05",
-    type_id: "8"
+    due_date: "2023-08-15",
+    type_id: 8
 }
-
-// RF546017710223
 
 const reference = 6017710223;
 
@@ -61,4 +60,58 @@ describe('get check digits for the given reference and validate the invoice refe
 
     });
 
-})
+});
+
+// create/store a new invoice in the database.
+describe('Create a new invoice in the database and check if it stored', () => {
+
+    test('delete invoice if there already was one in the database then create a new invoice.', async (done) => {
+
+        const getInvoiceResponse = await request.get(`/get-by-invoice-number/${invoiceNumber}`);
+
+        expect(getInvoiceResponse.status).toStrictEqual(200);
+        
+        // check if invoice already exists
+        if(!Object.keys(getInvoiceResponse.body).length == 0 && getInvoiceResponse.body.constructor == Object){
+            // an invoice with this number already exists
+
+            // delete existing invoice
+            const deleteInvoiceResponce = await request.delete(`/delete-invoice/${invoiceNumber}`);
+
+            expect(deleteInvoiceResponce.status).toStrictEqual(200);
+            expect(deleteInvoiceResponce.text).toStrictEqual('invoice deleted succesfully.');
+        }
+
+        // create new invoice
+        invoice.invoice_number = invoiceNumber;
+        const createInvoiceResponce = await request.post('/create-invoice').send(invoice);
+
+        expect(createInvoiceResponce.text).toStrictEqual("invoice created succesfully.");
+        expect(createInvoiceResponce.status).toStrictEqual(201);
+
+
+
+        done();
+    });
+
+    test('check if invoice was actually stored in the database.', async (done) => {
+
+        // get invoice
+        const getInvoiceResponse = await request.get(`/get-by-invoice-number/${invoiceNumber}`);
+
+        expect(getInvoiceResponse.status).toStrictEqual(200);
+
+        // check if the created invoice has all values
+        expect(getInvoiceResponse.body.invoice.reference_number).toStrictEqual(invoice.reference_number);
+        expect(getInvoiceResponse.body.invoice.business_name).toStrictEqual(invoice.business_name);
+        expect(getInvoiceResponse.body.invoice.client_name).toStrictEqual(invoice.client_name);
+        expect(getInvoiceResponse.body.invoice.amount_total).toStrictEqual(invoice.amount_total);
+        expect(getInvoiceResponse.body.invoice.due_date).toStrictEqual(invoice.due_date);
+        expect(getInvoiceResponse.body.invoice.type_id).toStrictEqual(invoice.type_id);
+        expect(parseInt(getInvoiceResponse.body.invoice.invoice_number)).toStrictEqual(invoice.invoice_number);
+
+
+        done();
+    });
+
+});
