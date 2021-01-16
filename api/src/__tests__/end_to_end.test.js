@@ -6,7 +6,6 @@ const request = supertest(app);
 
 // randomly select an invoice number.
 const invoiceNumber = Math.floor(Math.random() * 100000);
-// const invoiceNumber = 10475
 
 let invoice = {
     reference_number: "",
@@ -153,6 +152,38 @@ describe('Update invoice and check if the values acctually changed.', () => {
         expect(getInvoiceResponse.body.invoice.due_date).toStrictEqual(invoice.due_date);
         expect(getInvoiceResponse.body.invoice.type_id).toStrictEqual(invoice.type_id);
         expect(parseInt(getInvoiceResponse.body.invoice.invoice_number)).toStrictEqual(invoice.invoice_number);
+
+
+        done();
+    });
+
+});
+
+
+// delete the newly created and updated invoice and check if the invoice does not exist in the database anymore.
+describe('Delete invoice and check if the invoice does not exist in the database anymore.', () => {
+
+    test('delete the invoice from the database', async (done) => {
+
+        // delete the invoice
+        const deleteInvoiceResponce = await request.delete(`/delete-invoice/${invoiceNumber}`);
+
+        expect(deleteInvoiceResponce.status).toStrictEqual(200);
+        expect(deleteInvoiceResponce.text).toStrictEqual("invoice deleted succesfully.");
+
+        done();
+    });
+
+    test('check if invoice was actually updated in the database.', async (done) => {
+
+        // get invoice
+        const getInvoiceResponse = await request.get(`/get-by-invoice-number/${invoiceNumber}`);
+
+        // check if response is empty
+        expect(getInvoiceResponse.status).toStrictEqual(200);
+        expect(getInvoiceResponse.body).toStrictEqual({});
+        expect(Object.keys(getInvoiceResponse.body).length).toStrictEqual(0);
+        expect(getInvoiceResponse.body.constructor).toStrictEqual(Object);
 
 
         done();
