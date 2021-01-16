@@ -185,13 +185,11 @@ describe('calling a delete on an existing invoice should succesfully delete the 
 
         const getInvoiceResponse = await request.get(`/get-by-invoice-number/${newInvoiceNumber}`);
 
-        const jsonResponse = JSON.parse(getInvoiceResponse.text);
-
         // check if response is empty
         expect(getInvoiceResponse.status).toStrictEqual(200);
-        expect(jsonResponse).toStrictEqual({});
-        expect(Object.keys(jsonResponse).length).toStrictEqual(0);
-        expect(jsonResponse.constructor).toStrictEqual(Object);
+        expect(getInvoiceResponse.body).toStrictEqual({});
+        expect(Object.keys(getInvoiceResponse.body).length).toStrictEqual(0);
+        expect(getInvoiceResponse.body.constructor).toStrictEqual(Object);
 
         done();
 
