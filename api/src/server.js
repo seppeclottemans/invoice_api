@@ -36,7 +36,7 @@ app.get('/test', (req, res) => {
 /**
  * Returns the check digits of the given reference.
  * @param {integer} reference
- * @returns {integer} checkdigits of the given reference
+ * @returns {string} checkdigits of the given reference
  */
 app.get('/get-check-digits/:reference', (req, res) => {
   let result = Helpers.getCheckDigits(req.params.reference);

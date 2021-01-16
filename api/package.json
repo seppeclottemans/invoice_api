@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/index.js --legacy-watch",
-    "test": "jest --coverage",
-    "test-ci": "jest helpers.test.js databaseHelpers.test.js --detectOpenHandles"
+    "test": "jest",
+    "test-ci": "jest helpers.test.js databaseHelpers.test.js --detectOpenHandles",
+    "end-to-end": "jest end_to_end.test.js --watch"
   },
   "author": "",
   "license": "ISC",
