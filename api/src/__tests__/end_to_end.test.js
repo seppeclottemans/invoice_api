@@ -62,11 +62,12 @@ describe('get check digits for the given reference and validate the invoice refe
 
 });
 
-// create/store a new invoice in the database.
+// create/store a new invoice in the database and retrieve the newly created invoice.
 describe('Create a new invoice in the database and check if it stored', () => {
 
     test('delete invoice if there already was one in the database then create a new invoice.', async (done) => {
 
+        // get invoice
         const getInvoiceResponse = await request.get(`/get-by-invoice-number/${invoiceNumber}`);
 
         expect(getInvoiceResponse.status).toStrictEqual(200);
@@ -95,6 +96,49 @@ describe('Create a new invoice in the database and check if it stored', () => {
     });
 
     test('check if invoice was actually stored in the database.', async (done) => {
+
+        // get invoice
+        const getInvoiceResponse = await request.get(`/get-by-invoice-number/${invoiceNumber}`);
+
+        expect(getInvoiceResponse.status).toStrictEqual(200);
+
+        // check if the created invoice has all values
+        expect(getInvoiceResponse.body.invoice.reference_number).toStrictEqual(invoice.reference_number);
+        expect(getInvoiceResponse.body.invoice.business_name).toStrictEqual(invoice.business_name);
+        expect(getInvoiceResponse.body.invoice.client_name).toStrictEqual(invoice.client_name);
+        expect(getInvoiceResponse.body.invoice.amount_total).toStrictEqual(invoice.amount_total);
+        expect(getInvoiceResponse.body.invoice.due_date).toStrictEqual(invoice.due_date);
+        expect(getInvoiceResponse.body.invoice.type_id).toStrictEqual(invoice.type_id);
+        expect(parseInt(getInvoiceResponse.body.invoice.invoice_number)).toStrictEqual(invoice.invoice_number);
+
+
+        done();
+    });
+
+});
+
+
+// update the newly created invoice and check if the values acctually changed.
+describe('Update invoice and check if the values acctually changed.', () => {
+
+    test('update invoice with new values', async (done) => {
+
+        invoice.reference_number = "RF65454"
+        invoice.business_name = "new seppe corp"
+        invoice.client_name = "facebook"
+        invoice.amount_total = 16010120.61
+        invoice.due_date = "2024-12-23"
+        invoice.type_id = 10
+
+        const updateInvoiceResponce = await request.put(`/update-invoice/${invoiceNumber}`).send(invoice);
+
+        expect(updateInvoiceResponce.text).toStrictEqual("invoice updated succesfully.");
+        expect(updateInvoiceResponce.status).toStrictEqual(200);
+
+        done();
+    });
+
+    test('check if invoice was actually updated in the database.', async (done) => {
 
         // get invoice
         const getInvoiceResponse = await request.get(`/get-by-invoice-number/${invoiceNumber}`);
